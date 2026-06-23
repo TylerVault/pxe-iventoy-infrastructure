@@ -15,6 +15,7 @@ This environment provides network boot capabilities using iVentoy, enabling:
 ---
 
 ## Architecture
+```mermaid
 flowchart TD
 
     A[Admin VLAN 40<br/>Web UI Access Allowed] -->|HTTP TCP 16000 / 26000| B[iVentoy Server<br/>192.168.70.31]
@@ -26,6 +27,7 @@ flowchart TD
     B --> G[NBD<br/>TCP 10809]
     B --> H[iSCSI<br/>TCP 3260]
     B --> I[NFS<br/>TCP 12049]
+```
 
  DHCP (67) TFPT (69) HTTP PXE
  PXE Boot Bootloader ISO Menu
