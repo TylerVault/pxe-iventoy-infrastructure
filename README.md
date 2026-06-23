@@ -84,5 +84,59 @@ This environment provides network boot capabilities using iVentoy, enabling:
  cp -a /opt/iventoy/data /opt/iventoy/data.backup_$(date +%F)
  ```
 
- HERE IS A BRAND NEW CHANGE!!!
+## Server Setup (iVentoy PXE Host)
+This section describes how to deploy the iVentoy PXE server on a fresh Linux system.
+---
+### Prerequisites
+- Linux server (systemd-based distro)
+- Root or sudo access
+- Network interface with static IP (example: `192.168.70.31`)
+- KVM environment (current deployment context)
+- Open ports:
+    - UDP: 67 (DHCP), 69 (TFTP)
+    - TCP: 16000/26000 (HTTP PXE / Web UI)
+    - TCP: 10809 (NBD)
+    - TCP: 3260 (iSCSI)
+    - TCP: 12049 (NFS)
+---
+### Installation Directory
+iVentoy is installed in:
+```bash
+/opt/iventoy
+```
+Expected structure:
+/opt/iventoy/
+├── iventoy.sh
+├── lib/
+├── data/
+│ ├── config.dat
+│ ├── iso/
+│ └── ...
+└── log/
+---
+### ISO Storage
+All bootable images are stored under:
+
+```bash
+/opt/iventoy/data/iso/
+```
+Example structure:
+
+iso/
+├── Windows 11 25H2 v2.iso
+├── Windows 10 22H2.iso
+├── Ubuntu v26.04.iso
+└── Utilities/
+├── Hiren's BootCD PE.iso
+└── Macrium Rescue.iso
+
+---
+### First-Time Startup
+Start iVentoy manually:
+
+```bash
+cd /opt/iventoy
+sudo ./iventoy.sh start
+```
+
 
