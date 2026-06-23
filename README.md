@@ -139,4 +139,29 @@ cd /opt/iventoy
 sudo ./iventoy.sh start
 ```
 
+## Persistent Startup (Systemd)
+iVentoy is managed via a custom systemd service to ensure it starts automatically on boot and survives reboots.
+---
+### Service File Location
+```bash
+/etc/systemd/system/iventoy.service
+```
+---
+### Service Configuration
+```ini
+[Unit]
+Description=iVentoy PXE Server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/iventoy
+ExecStart=/opt/iventoy/iventoy.sh -R start
+ExecStop=/opt/iventoy/iventoy.sh stop
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
 
