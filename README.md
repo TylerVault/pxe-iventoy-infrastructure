@@ -15,21 +15,17 @@ This environment provides network boot capabilities using iVentoy, enabling:
 ---
 
 ## Architecture
-            ┌────────────────────────────┐
-            │        Admin VLAN 40        │
-            │  (Web UI Access Allowed)    │
-            └────────────┬───────────────┘
-                         │
-                         │ HTTP (TCP 16000 / 26000)
-                         ▼
-                ┌───────────────────┐
-                │   iVentoy Server  │
-                │ 192.168.70.31     │
-                └───────┬───────────┘
-                        │
- ┌──────────────────────┼──────────────────────┐
- │                      │                      │
- ▼                      ▼                      ▼
+flowchart TD
+
+    A[Admin VLAN 40<br/>Web UI Access Allowed] -->|HTTP TCP 16000 / 26000| B[iVentoy Server<br/>192.168.70.31]
+
+    B --> C[DHCP<br/>UDP 67]
+    B --> D[TFTP<br/>UDP 69]
+    B --> E[HTTP PXE / API<br/>TCP 16000]
+    B --> F[Web UI<br/>TCP 26000]
+    B --> G[NBD<br/>TCP 10809]
+    B --> H[iSCSI<br/>TCP 3260]
+    B --> I[NFS<br/>TCP 12049]
 
  DHCP (67) TFPT (69) HTTP PXE
  PXE Boot Bootloader ISO Menu
@@ -105,6 +101,7 @@ iVentoy is installed in:
 /opt/iventoy
 ```
 Expected structure:
+```bash
 /opt/iventoy/
 ├── iventoy.sh
 ├── lib/
@@ -113,6 +110,7 @@ Expected structure:
 │ ├── iso/
 │ └── ...
 └── log/
+```
 ---
 ### ISO Storage
 All bootable images are stored under:
