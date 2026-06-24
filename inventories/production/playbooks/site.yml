@@ -1,0 +1,8 @@
+- name: PXE iVentoy Infrastructure
+  hosts: pxe_servers
+  become: true
+
+  roles:
+    - iventoy
+    - samba
+    - firewall 
