@@ -275,7 +275,15 @@ sudo systemctl status smbd
 sudo systemctl is-enabled smbd
 ```
 
+### iVentoy User Content
+The `iVentoy-Scripts` share exposes `/opt/iventoy/user`, which is used for:
 
+- Autounattend XML files
+- Kickstart configurations
+- Preseed files
+- AutoYaST files
+- Injection files (namely, `set.me`)
+- Other custom deployment assets referenced by iVentoy
 
 
 
