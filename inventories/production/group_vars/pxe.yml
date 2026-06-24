@@ -1,0 +1,16 @@
+iventoy_version: "1.0.36"
+
+iventoy_base: /opt/iventoy
+iventoy_install_dir: "/opt/iventoy/{{ iventoy_version }}"
+iventoy_symlink: /opt/iventoy
+
+iventoy_user: tvadmin
+iventoy_group: iventoy-admins
+
+iventoy_ports:
+  - 67 # DHCP
+  - 69 # TFTP
+  - 16000
+  - 10809
+  - 3260
+  - 12049
