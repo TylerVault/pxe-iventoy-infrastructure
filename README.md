@@ -16,17 +16,25 @@ This environment provides network boot capabilities using iVentoy, enabling:
 
 ## Architecture
 ```mermaid
-flowchart TD
+flowchart LR
 
-    A[Admin VLAN 40<br/>Web UI Access Allowed] -->|HTTP TCP 16000 / 26000| B[iVentoy Server<br/>192.168.70.31]
+    subgraph VLAN40[Admin VLAN 40]
+        A[Admin Workstation]
+    end
 
-    B --> C[DHCP<br/>UDP 67]
-    B --> D[TFTP<br/>UDP 69]
-    B --> E[HTTP PXE / API<br/>TCP 16000]
-    B --> F[Web UI<br/>TCP 26000]
-    B --> G[NBD<br/>TCP 10809]
-    B --> H[iSCSI<br/>TCP 3260]
-    B --> I[NFS<br/>TCP 12049]
+    subgraph PXE[iVentoy PXE Server]
+        B[192.168.70.31]
+
+        B --> DHCP[DHCP UDP 67]
+        B --> TFTP[TFTP UDP 69]
+        B --> HTTP[HTTP PXE 16000]
+        B --> UI[Web UI 26000]
+        B --> NBD[NBD 10809]
+        B --> ISCSI[iSCSI 3260]
+        B --> NFS[NFS 12049]
+    end
+
+    A -->|HTTP Admin Access| UI
 ```
 
  DHCP (67) TFPT (69) HTTP PXE
@@ -109,8 +117,11 @@ Expected structure:
 ├── lib/
 ├── data/
 │ ├── config.dat
-│ ├── iso/
 │ └── ...
+├── iso/
+│ ├── Windows 11 25H2 v2.iso
+│ ├── Ubuntu v26.04.iso
+│ └── Utilities/
 └── log/
 ```
 ---
@@ -121,7 +132,7 @@ All bootable images are stored under:
 /opt/iventoy/data/iso/
 ```
 Example structure:
-
+```bash
 iso/
 ├── Windows 11 25H2 v2.iso
 ├── Windows 10 22H2.iso
@@ -129,7 +140,7 @@ iso/
 └── Utilities/
 ├── Hiren's BootCD PE.iso
 └── Macrium Rescue.iso
-
+```
 ---
 ### First-Time Startup
 Start iVentoy manually:
@@ -162,6 +173,81 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
+```
+### Enable and Start Service
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable iventoy
+sudo systemctl start iventoy
+```
+---
+### Restart Service
+```bash
+sudo systemctl restart iventoy
+```
+---
+### Check Service Status
+```bash
+sudo systemctl status iventoy
+```
+---
+### Verify Service is Enabled
+```bash
+sudo systemctl is-enabled iventoy
+```
+### Important Note (`-R` Flag)
+The `-R` flag is required when starting iVentoy via systemd to ensure PXE-related services are automatically initialized and restored after a reboot.
+Example:
+```bash
+sudo ./iventoy.sh -R start
+```
+
+Systemd configuration:
+
+```ini
+ExecStart=/opt/iventoy/iventoy.sh -R start
+```
+
+### What the `-R` Flag Does
+
+- Recovers settings from `data/config.dat`
+- Restores PXE configuration automatically
+- Starts DHCP services in the configured mode (ProxyNet/Internal)
+- Start TFTP services
+- Starts HTTP PXE services
+- Reloads and indexes configured ISO images
+- Restores User Filter and MAC Filter settings
+- Restores default boot image configuration
+
+#### Symptoms When `-R` Is Missing
+
+The iVentoy process may appear to be running, but PXE functionality may not be available.
+
+Common symptoms include:
+
+- No DHCP service listening on UDP 67
+- No TFTP service listening on UDP 69
+- PXE clients fail to boot
+- PXE menu is unavailable
+- Services must be manually started from the Web UI
+
+#### Verification
+
+Check the log after startup:
+
+```bash
+tail -f /opt/iventoy/log/log.txt
+```
+
+A healthy startup should contain entries similar to:
+
+```text
+DHCP service is running
+TFTP service is running
+HTTP PXE services is running
+iVentoy entering main loop
+```
+
 
 
 
