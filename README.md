@@ -247,6 +247,35 @@ TFTP service is running
 HTTP PXE services is running
 iVentoy entering main loop
 ```
+## Samba Shares
+The PXE server exposes the following SMB shares for administrative use:
+
+| Share | Path | Purpose | 
+|-------|------|----------|
+| iVentoy-ISO | `/opt/iventoy/iso` | ISO image repository |
+| iVentoy-Scripts | `/opt/iventoy/user/scripts` | Unattended deployment files (Autunattend, Kickstart, Preseed, AutoYaST, etc.) |
+
+### Verify Shares
+
+```bash
+testparm -s | grep '^\['
+```
+
+Expected output:
+
+```text
+[iVentoy-ISO]
+[iVentoy-Scripts]
+```
+
+### Check Samba Service
+
+```bash
+sudo systemctl status smbd
+sudo systemctl is-enabled smbd
+```
+
+
 
 
 
