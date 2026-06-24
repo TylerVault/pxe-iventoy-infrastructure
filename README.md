@@ -3,6 +3,30 @@
 A PXE boot infrastructure based on **iVentoy**, used for network booting ISO images across VLAN-segmented environments with controlled administrative access and persistent configuration across reboots.
 This repository serves as a **living documentation source** prior to full Infrastructure-as-Code (Ansible) conversion.
 ---
+## Installation Model
+iVentoy is deployed as a manually extracted binary distribution rather than a package-managed application.
+
+Current deployment method:
+- Download official tarball from iVentoy releases
+- Extract to `/opt/iventoy`
+- Start via systemd service
+
+### Upgrade Process
+Upgrades are currently manual and documented here:
+https://www.iventoy.com/en/doc_update.html
+
+Process:
+1. Stop iVentoy service
+2. Replace `/opt/iventoy` contents with new version
+3. Ensure `config.dat` is preserved
+4. Restart service
+
+### Upgrade Frequency
+
+Upgrades are performed only when:
+- Critical security fixes are released
+- Functional issues require resolution
+- New PXE features are required
 
 ## Overview
 This environment provides network boot capabilities using iVentoy, enabling:
