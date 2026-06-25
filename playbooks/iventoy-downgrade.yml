@@ -1,0 +1,75 @@
+- name: Downgrade iVentoy
+  hosts: pxe_servers
+  become: true
+  gather_facts: true
+
+  vars: 
+    iventoy_version: "1.0.35"
+    iventoy_tar: "files/iventoy/iventoy-{{iventoy_version}}-linux-x86_64-free.tar.gz"
+
+  tasks: 
+
+    - name: Stop iVentoy Service (soft stop)
+      systemd: 
+        name: iventoy
+        state: stopped
+      ignore_errors: true
+
+    - name: Force kill iventoy if still running
+      shell: |
+        systemctl kill -s SIGKILL iventoy || true
+        pkill -9 -f iventoy || true
+      become: true
+
+    - name: Wait until iVentoy is fully stopped
+      shell: "pgrep -f iventoy"
+      register: iventoy_check
+      retries: 10
+      delay: 1
+      until: iventoy_check.rc != 0
+      changed_when: false
+      failed_when: false
+
+    - name: Backup current install
+      copy:
+        src: /opt/iventoy
+        dest: "/opt/iventoy_backup_{{ansible_date_time.date}}"
+        remote_src: true
+
+    - name: Extract downgrade package
+      unarchive: 
+        src: "{{iventoy_tar}}"
+        dest: /tmp
+        remote_src: false
+
+    - name: Deploy downgrade version
+      copy: 
+        src: "/tmp/iventoy-{{iventoy_version}}/"
+        dest: /opt/iventoy/
+        remote_src: true
+
+    # - name: Replace iVentoy binaries (preserve state)
+    #   synchronize:
+    #     src: "/tmp/iventoy-{{iventoy_version}}/iventoy-{{iventoy_version}}"
+    #     dest: /opt/iventoy/
+    #     rsync_opts:
+    #       - "--exclude=data"
+    #       - "--exclude=iso"
+    #       - "--exclude=user"
+    #       - "--exclude=log"
+    #     delete: no
+
+    - name: Start service
+      systemd:
+        name: iventoy
+        state: started
+        enabled: true
+
+    # - name: Check service status
+    #   systemd: 
+    #     name: iventoy
+    #   register: iventoy_status
+
+    # - name: Show status
+    #   debug:
+    #     var: iventoy_status

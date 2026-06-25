@@ -1,8 +1,10 @@
 iventoy_version: "1.0.36"
 
-iventoy_base: /opt/iventoy
-iventoy_install_dir: "/opt/iventoy/{{ iventoy_version }}"
-iventoy_symlink: /opt/iventoy
+iventoy_base_dir: /opt/iventoy
+iventoy_release_dir: /opt/iventoy/releases
+iventoy_current_link: /opt/iventoy/current
+# iventoy_install_dir: "/opt/iventoy/{{ iventoy_version }}"
+# iventoy_symlink: /opt/iventoy
 
 iventoy_user: tvadmin
 iventoy_group: iventoy-admins
