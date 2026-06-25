@@ -1,0 +1,14 @@
+[Unit]
+Description=iVentoy PXE Server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/iVentoy
+ExecStart=/opt/iventoy/iventoy.sh -R start 
+ExecStop=/opt/iventoy/iventoy.sh stop 
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

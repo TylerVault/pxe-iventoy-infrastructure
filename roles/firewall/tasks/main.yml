@@ -1,0 +1,21 @@
+- name: Install UFW
+  apt: 
+    name: ufw
+    state: present
+
+- name: Allow PXE services
+  ufw: 
+    rule: allow
+    port: "{{item}}"
+  loop:
+    - 67
+    - 69
+    - 16000
+    - 26000
+    - 10809
+    - 3260
+    - 12049
+
+- name: Enable UFW
+  ufw: 
+    state: enabled

@@ -11,43 +11,43 @@
     name: "{{iventoy_group}}"
     state: present
 
-- name: Create install directory (versioned)
-  file:
-    path: "{{iventoy_install_dir}}"
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
+# - name: Create install directory (versioned)
+#   file:
+#     path: "{{iventoy_install_dir}}"
+#     state: directory
+#     owner: root
+#     group: root
+#     mode: '0755'
 
-- name: Create persistent data directory
-  file:
-    path: "{{iventoy_install_dir}}/data"
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
+# - name: Create persistent data directory
+#   file:
+#     path: "{{iventoy_install_dir}}/data"
+#     state: directory
+#     owner: root
+#     group: root
+#     mode: '0755'
 
-- name: Extract iVentoy tarball
-  unarchive:
-    src: "files/iventoy-{{iventoy_version}}.tar.gz"
-    dest: "{{iventoy_install_dir}}"
-    remote_src: false
-    creates: "{{iventoy_install_dir}}/iventoy.sh"
+# - name: Extract iVentoy tarball
+#   unarchive:
+#     src: "files/iventoy-{{iventoy_version}}.tar.gz"
+#     dest: "{{iventoy_install_dir}}"
+#     remote_src: false
+#     creates: "{{iventoy_install_dir}}/iventoy.sh"
 
-- name: Preserve existing config.dat (if exists)
-  copy:
-    src: /opt/iventoy/data/config.dat
-    dest: "{{iventoy_install_dir}}/data/config.dat"
-    remote_src: true
-    force: false
-  ignore_errors: true
+# - name: Preserve existing config.dat (if exists)
+#   copy:
+#     src: /opt/iventoy/data/config.dat
+#     dest: "{{iventoy_install_dir}}/data/config.dat"
+#     remote_src: true
+#     force: false
+#   ignore_errors: true
 
-- name: Symlink active install
-  file:
-    src: "{{iventoy_install_dir}}"
-    dest: "{{iventoy_symlink}}"
-    state: link
-    force: true
+# - name: Symlink active install
+#   file:
+#     src: "{{iventoy_install_dir}}"
+#     dest: "{{iventoy_symlink}}"
+#     state: link
+#     force: true
 
 - name: Create ISO directory
   file:
@@ -71,13 +71,16 @@
     dest: /etc/systemd/system/iventoy.service
     mode: '0644'
 
-- name: Reload systemd
-  systemd:
-    daemon_reload: true
+- name: Install systemd service
+  template:
+    src: iventoy.service.j2
+    dest: /etc/systemd/system/iventoy.service
+    mode: '0644'
+  notify: reload systemd
 
 - name: Enable iVentoy service
   systemd:
-    name: iVentoy
+    name: iventoy
     enabled: true
 
 - name: Start iVentoy service

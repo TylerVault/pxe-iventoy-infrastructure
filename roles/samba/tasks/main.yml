@@ -1,0 +1,17 @@
+- name: Install Samba
+  apt:
+    name: samba
+    state: present
+
+- name: Deploy Samba config
+  template: 
+     src: smb-iventoy.conf.j2
+     dest: /etc/samba/smb.conf
+     backup: true
+  notify: restart samba
+
+- name: Ensure Samba is enabled
+  systemd:
+    name: smbd
+    enabled: true
+    state: standard 
