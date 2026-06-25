@@ -1,0 +1,12 @@
+- name: Install dependencies
+  apt:
+    name:
+      - tar
+      - samba
+    state: present
+    update_cache: true
+
+- name: Create group
+  group:
+    name: "{{iventoy_group}}"
+    state: present
