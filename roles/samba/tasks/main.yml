@@ -15,4 +15,3 @@
     name: smbd
     enabled: true
     state: started
-    enabled : true  
