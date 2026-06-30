@@ -1,0 +1,16 @@
+- name: Extract iVentoy package
+  unarchive:
+    src: "/tmp/{{ iventoy_tarball }}"
+    dest: /tmp
+    remote_src: yes
+
+- name: Sync application files
+  synchronize:
+    src: "/tmp/iventoy-{{ iventoy_version }}/iventoy-{{ iventoy_version }}/"
+    dest: "{{ iventoy_install_dir }}/"
+    delete: yes
+    rsync_opts:
+      - "--exclude=data"
+      - "--exclude=iso"
+      - "--exclude=user"
+      - "--exclude=log"

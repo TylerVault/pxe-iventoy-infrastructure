@@ -1,0 +1,6 @@
+- import_tasks: stop.yml
+- import_tasks: backup.yml
+- import_tasks: deploy.yml
+- import_tasks: data.yml
+- import_tasks: start.yml
+- import_tasks: validate.yml

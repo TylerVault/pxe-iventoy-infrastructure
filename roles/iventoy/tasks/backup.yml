@@ -1,0 +1,4 @@
+- name: Create backup of current install
+  archive:
+    path: /opt/iventoy
+    dest: "/root/iventoy-backup-{{ ansible_date_time.date }}.tar.gz"

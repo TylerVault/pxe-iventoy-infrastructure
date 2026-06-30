@@ -1,0 +1,7 @@
+- name: Stop iVentoy service
+  systemd:
+    name: iventoy
+    state: stopped
+
+- name: Kill leftover processes
+  shell: "pkill -f iventoy || true"

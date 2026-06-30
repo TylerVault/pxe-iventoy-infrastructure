@@ -1,0 +1,18 @@
+- name: Update versioned runtime files
+  copy:
+    src: "/tmp/iventoy-{{ iventoy_version }}/iventoy-{{ iventoy_version }}/data/iventoy.dat"
+    dest: "{{ iventoy_install_dir }}/data/iventoy.dat"
+
+- name: Update mac database
+  copy: 
+    src: "/tmp/iventoy-{{ iventoy_version }}/iventoy-{{ iventoy_version }}/data/mac.db"
+    dest: "{{ iventoy_install_dir }}/data/mac.db"
+
+- name: Update GRUB ISO
+  copy: 
+    src: "/tmp/iventoy-{{ iventoy_version }}/iventoy-{{ iventoy_version }}/data/iVentoyGRUB.iso"
+    dest: "{{ iventoy_install_dir }}/data/iVentoyGRUB.iso"
+
+- name: Ensure config is preserved
+  stat:
+    path: "{{ iventoy_install_dir }}/data/config.dat"

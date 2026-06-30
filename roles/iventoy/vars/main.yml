@@ -1,0 +1,3 @@
+iventoy_version: "1.0.37"
+iventoy_install_dir: /opt/iventoy
+iventoy_tarball: "iventoy-{{ iventoy_version }}-linux-x86_64-free.tar.gz"

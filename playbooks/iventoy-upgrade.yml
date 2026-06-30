@@ -1,0 +1,6 @@
+- name: iVentoy upgrade
+  hosts: iventoy_servers
+  become: true
+
+  roles:
+    - iventoy

@@ -1,0 +1,5 @@
+- name: Start iVentoy
+  systemd:
+    name: iventoy
+    state: started
+    daemon_reload: true
