@@ -1,3 +1,4 @@
+- import_tasks: download.yml
 - import_tasks: stop.yml
 - import_tasks: backup.yml
 - import_tasks: deploy.yml

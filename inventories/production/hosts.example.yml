@@ -1,0 +1,7 @@
+all:
+  children:
+    iventoy_servers:
+      hosts:
+        pxe-server:
+          ansible_host: 192.168.x.x
+          ansible_user: youruser

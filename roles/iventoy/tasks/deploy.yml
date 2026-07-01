@@ -9,8 +9,11 @@
     src: "/tmp/iventoy-{{ iventoy_version }}/iventoy-{{ iventoy_version }}/"
     dest: "{{ iventoy_install_dir }}/"
     delete: yes
-    rsync_opts:
+    command: >
+      rsync -a
       - "--exclude=data"
       - "--exclude=iso"
       - "--exclude=user"
       - "--exclude=log"
+      {{ iventoy_extract_dir }}/iventoy-{{ iventoy_version }}/
+      /opt/iventoy/

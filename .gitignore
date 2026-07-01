@@ -1,0 +1,60 @@
+# Production inventory
+iventories/production/hosts.yml
+
+# iVentoy release archives
+files/iventoy/*.tar.gz
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ansible retry files
+*.retry
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# VS Code
+.vscode/
+
+# Jetbrains IDEs
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Temporary files
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Ansible Galaxy downloads (if used)
+collections/
+
+# Local secrets (adjust if you store them elsewhere)
+*.vault
+vault_pass.txt
+
+# Terraform (if ever added)
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Archives
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+
+# Local testing artifacts
+tmp/
+temp/

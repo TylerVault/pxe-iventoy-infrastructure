@@ -1,0 +1,9 @@
+- name: Check port 26000 is listening
+  wait_for:
+    port: 26000
+    timeout: 30
+
+- name: Confirm process is running
+  shell: "pgrep -af iventoy"
+  register: iventoy_process
+  changed_when: false

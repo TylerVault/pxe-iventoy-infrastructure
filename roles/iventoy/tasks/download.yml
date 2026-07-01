@@ -1,0 +1,23 @@
+---
+- name: Download iVentoy {{ iventoy_version }}
+  get_url:
+    url: "{{ iventoy_download_url }}"
+    dest: "{{ iventoy_archive }}"
+    mode: "0644"
+
+- name: Remove previous extraction directory
+  file:
+    path: "{{ iventoy_extract_dir }}"
+    state: absent
+
+- name: Create extraction directory
+  file:
+    path: "{{ iventoy_extract_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Extract iVentoy
+  unarchive:
+    src: "{{ iventoy_archive }}"
+    dest: "{{ iventoy_extract_dir }}"
+    remote_src: true
